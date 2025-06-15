@@ -15,7 +15,7 @@ jobs:
     name: Find add-ons
     runs-on: ubuntu-latest
     outputs:
-      docker_images: ${{ steps.addons.outputs.docker_images_list }}
+      docker_images: ${{ steps.docker_images.outputs.docker_images_list }}
     steps:
       - name: ⤵️ Check out code from GitHub
         uses: actions/checkout@v4.2.2
