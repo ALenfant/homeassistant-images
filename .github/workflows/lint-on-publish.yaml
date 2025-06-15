@@ -50,3 +50,12 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ matrix.image }}
 
+      - name: Build and push Docker image ${{ matrix.image }}
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          context: .
+          file: ${{ matrix.image }}/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
