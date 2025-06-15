@@ -1,0 +1,35 @@
+name: Lint on release publish
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  find:
+    name: Find Docker images
+    runs-on: ubuntu-latest
+    outputs:
+      docker_images: ${{ steps.docker_images.outputs.docker_images_list }}
+    steps:
+      - name: ⤵️ Check out code from GitHub
+        uses: actions/checkout@v4.2.2
+
+      - name: 🔍 Find docker images directories
+        id: docker_images
+        uses: ./.github/actions/find-docker-images
+
+  lint:
+    name: Lint docker image ${{ matrix.image }}
+    runs-on: ubuntu-latest
+    needs: find
+    strategy:
+      matrix:
+        image: ${{ fromJson(needs.find.outputs.docker_images) }}
+    steps:
+      - name: ⤵️ Check out code from GitHub
+        uses: actions/checkout@v4.2.2
+      - name: 🔍 Lint Dockerfile
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: "./${{ matrix.image }}/Dockerfile"
+
