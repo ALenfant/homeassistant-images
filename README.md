@@ -1,0 +1,1 @@
+This repo contains base images re-used in some of my addons provided at https://github.com/ALenfant/homeassistant-addons/

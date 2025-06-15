@@ -1,0 +1,29 @@
+name: 'Find Docker Images'
+description: 'Find all docker image directories in the repository'
+outputs:
+  docker_images:
+    description: Returns a list of all docker images in the repository
+    value: ${{ steps.addons.outputs.docker_images }}
+  docker_images_list:
+    description: Returns a JSON list of all docker images in the repository
+    value: ${{ steps.addons.outputs.docker_images_list }}
+runs:
+  using: "composite"
+  steps: 
+    - shell: bash
+      id: addons
+      run: |
+        declare -a docker_images
+        declare -a docker_images_list
+
+        for docker_image in $(find ./ -maxdepth 2 -name Dockerfile | cut -d "/" -f2 | sort -u); do
+          docker_images+=("${docker_image}");
+          docker_images_list+=("\"${docker_image}\",");
+        done
+
+        json_list=$(echo ${docker_images_list[@]} | rev | cut -c 2- | rev)
+
+        echo "Found docker images: ${docker_images[@]}"
+        echo "Found docker images (JSON): [${json_list}]"
+        echo "docker_images=${docker_images[@]}" >> "$GITHUB_OUTPUT"
+        echo "docker_images_list=[${json_list}]" >> "$GITHUB_OUTPUT"
