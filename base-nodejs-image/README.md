@@ -1,0 +1,1 @@
+This is a Docker image based on the Home Assistant Addons base image (itself based on Alpine), with NodeJS 20 and Yarn pre-installed
