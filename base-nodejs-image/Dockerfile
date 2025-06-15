@@ -3,20 +3,16 @@ ARG BUILD_FROM=ghcr.io/hassio-addons/base:17.2.5
 # hadolint ignore=DL3006
 FROM ${BUILD_FROM}
 
+ARG BUILD_ARCH
+
+RUN echo "Building for $BUILD_ARCH"
+
 # Environment configuration
 ENV NODE_VERSION 20.19.2
 ENV YARN_VERSION 1.22.22
 
 # Set shell
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-
-# Setup base
-# https://github.com/outline/outline/releases
-ARG OUTLINE_VERSION=0.81.1
-
-ARG BUILD_ARCH
-
-RUN echo "Building for $BUILD_ARCH"
 
 # NodeJS and Yarn setup, copied from https://github.com/nodejs/docker-node/blob/main/20/alpine3.22/Dockerfile
 RUN addgroup -g 1000 node \
